@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onboarding Form</title>
+  <style>
+    /* Base styles */
+    body {
+        background: #f0f4f8;
+        color: #212529;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        margin: 0;
+        max-width: 1400px;    
+    }
+
+    .container {
+        width: 90%;
+        height: 100vh;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        perspective: 1000px;
+    }
+
+    .section-heading {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: #007bff;
+        text-transform: uppercase;
+        font-family: 'Tahoma', sans-serif;
+        position: relative;
+        padding-bottom: 8px;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .section-heading::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background-color: #007bff;
+    }
+
+    /* Button Styles */
+    button {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 1.25rem;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        font-weight: bold;
+    }
+
+    button.outline {
+        background: transparent;
+        border: 2px solid #007bff;
+        color: #007bff;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    button.outline:hover {
+        background-color: #007bff;
+        color: #ffffff;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    button.primary {
+        background: linear-gradient(45deg, #0056b3, #0069d9);
+        color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    button.primary:hover {
+        background: linear-gradient(45deg, #0069d9, #0056b3);
+        transform: translateY(-3px);
+    }
+
+    /* Input Fields */
+    .field-group input,
+    .field-group select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ced4da;
+        border-radius: 1.25rem;
+        margin-bottom: 16px;
+        font-size: 1rem;
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .field-group input:focus,
+    .field-group select:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Card Styles */
+    .card {
+        background: #ffffff;
+        border-radius: 1.25rem;
+        padding: 2rem;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ced4da;
+        animation: cardAppear 0.3s ease-out forwards;
+    }
+
+    @keyframes cardAppear {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Progress Bar */
+    .progress {
+        height: 8px;
+        background-color: #e9f7fe;
+        margin-bottom: 1rem;
+        position: relative;
+        border-radius: 4px;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #007bff;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+    }
+
+    /* Education Section CSS */
+    .education-entry {
+        margin-bottom: 1rem;
+        border: 1px solid #ced4da;
+        padding: 1rem;
+        border-radius: 1.25rem;
+        position: relative;
+    }
+
+    .education-entry .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+
+    .education-entry .form-group label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .education-entry .form-group input,
+    .education-entry .form-group select {
+        padding: 0.75rem;
+        font-size: 1rem;
+        border-radius: 1.25rem;
+        border: 1px solid #ced4da;
+        background-color: #f8f9fa;
+        transition: border-color 0.3s ease;
+    }
+
+    /* Actions */
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+
+    /* Add Section Button */
+    .add-section {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .add-section:hover {
+        background: #007bff;
+        opacity: 0.8;
+    }
+
+    /* Text Align */
+    .text-center {
+        text-align: center;
+    }
+
+    .mb-12 {
+        margin-bottom: 3rem;
+    }
+
+    .max-w-2xl {
+        max-width: 660px;
+    }
+
+    .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .container {
+            padding: 1.5rem;
+        }
+
+        .section-heading {
+            font-size: 1.25rem;
+            text-align: center;
+        }
+
+        .actions {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card {
+            padding: 1.5rem;
+        }
+
+        .add-section {
+            width: 100%;
+            text-align: center;
+            margin-top: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            padding: 1rem;
+        }
+
+        .section-heading {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .actions {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .add-section {
+            width: 100%;
+            padding: 12px;
+        }
+        .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+input:invalid {
+    border-color: red;
+}
+
+    .tooltip {
+        position: absolute;
+        background: #333;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        z-index: 1000;
+        pointer-events: none;
+    }
+    
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 4px;
+        margin-bottom: 8px;
+    }
+    
+    input.invalid, select.invalid {
+        border-color: red;
+    }
+    
+    .remove-section {
+        cursor: pointer;
+        color: red;
+        float: right;
+        font-weight: bold;
+    }
+    
+    .remove-section:hover {
+        opacity: 0.8;
+    }
+    }
+</style>
+</head>
+<body>
+    <!-- HTML content remains the same, but removed all validation-related attributes -->
+    <div class="min-h-screen py-8">
+        <div class="container">
+          <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-primary mb-4">Welcome Aboard!</h1>
+            <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+              We're excited to have you join us. Please complete the following steps to get started with your onboarding process.
+            </p>
+          </div>
+    
+          <!-- Step 1 - Personal Information -->
+          <div id="step-1" class="card">
+            <h3 class="section-heading">Personal Information</h3>
+            <div class="field-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="father-name">Father's Name</label>
+              <input type="text" id="father-name" name="father-name" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="dob">Date of Birth</label>
+              <input type="date" id="dob" name="dob" required minlength="5">
+            </div>
+            <div class="field-group">
+              <label for="email">Email ID</label>
+              <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  required
+                  pattern="[a-zA-Z0-9]+@(gmail|yahoo|outlook)\.com$"
+                  title="Please enter a valid email address (@gmail.com, @yahoo.com, or @outlook.com)"
+              >
+          </div>
+          <div class="field-group">
+              <label for="alt-email">Alternate Email ID</label>
+              <input 
+                  type="email" 
+                  id="alt-email" 
+                  name="alt-email" 
+                  required
+                  pattern="[a-zA-Z0-9]+@(gmail|yahoo|outlook)\.com$"
+                  title="Please enter a valid email address (@gmail.com, @yahoo.com, or @outlook.com)"
+              >
+          </div>
+      
+          <!-- Update mobile input fields -->
+          <div class="field-group">
+              <label for="mobile">Mobile Number</label>
+              <input 
+                  type="tel" 
+                  id="mobile" 
+                  name="mobile"
+                  required
+                  pattern="[0-9]{10}"
+                  maxlength="10"
+                  title="Please enter exactly 10 digits"
+              >
+          </div>
+          <div class="field-group">
+              <label for="alt-mobile">Alternate Mobile Number</label>
+              <input 
+                  type="tel" 
+                  id="alt-mobile" 
+                  name="alt-mobile"
+                  required
+                  pattern="[0-9]{10}"
+                  maxlength="10"
+                  title="Please enter exactly 10 digits"
+              >
+          </div>
+            <div class="field-group">
+              <label for="aadhar">Aadhar Number</label>
+              <input type="text" id="aadhar" name="aadhar" maxlength="12" required onkeydown="return event.key !== 'e' && event.key !== 'E'"
+                     oninput="validateAadhar()">
+              <span id="error-message" style="color: red; display: none;">Aadhar Number must be exactly 12 digits long.</span>
+           </div>
+
+            <div class="field-group">
+              <label for="documentUpload">Aadhar Document*</label>
+              <input type="file" id="documentUpload" accept=".pdf"  required style=" width: 100%; padding: 12px;">
+            </div>
+
+            <div class="field-group">
+                <label for="pan">PAN Number</label>
+                <input 
+                    type="text" 
+                    id="pan" 
+                    name="pan"
+                    
+                    required 
+                    minlength="10" 
+                    maxlength="10" 
+                    oninput="validatePAN(this)"
+                    
+                >
+                <span id="panError" class="error" style="color: red;"></span>
+            </div>
+
+            <div class="field-group">
+              <label for="documentUpload">PAN Documents*</label>
+              <input type="file" id="documentUpload" accept=".pdf" required style=" width: 100%; padding: 12px;">
+            </div>
+
+            <div class="actions">
+              <button class="primary" id="next-button">Next</button>
+            </div>
+          </div>
+    
+          <!-- Step 2 - Education -->
+          <div id="step-2" class="card" style="display:none;">
+            <h3 class="section-heading">Education</h3>
+            <div id="educationContainer">
+                <!-- Template for education entries -->
+                <div class="repeater-section education-entry">
+                    <span class="remove-section">&minus;</span>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Education Level *</label>
+                            <select class="edu-level" required>
+                                <option value="">Select</option>
+                                <option value="phd">Ph.D.</option>
+                                <option value="masters">Masters/Post-Graduation</option>
+                                <option value="bachelors">Bachelors/Graduation</option>
+                                <option value="diploma">Diploma</option>
+                                <option value="hsc">HSC/12th</option>
+                                <option value="ssc">SSC/10th</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Stream/Specialization *</label>
+                            <input type="text" class="edu-stream" required minlength="3" required oninput="filterNameInput(event)">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Institution Name *</label>
+                            <input type="text" class="edu-institution" required minlength="5" required oninput="filterNameInput(event)">
+                        </div>
+                        <div class="form-group">
+                            <label>Board/University *</label>
+                            <input type="text" class="edu-board" required minlength="3" required oninput="filterNameInput(event)">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Year of Passing *</label>
+                            <input type="number" class="edu-year" min="0" max="100" step="0.01" required onkeydown="return event.key !== 'e' && event.key !== 'E'"
+                            oninput="this.value = this.value.replace(/[eE]/g, '')">
+                        </div>
+                        <div class="form-group">
+                            <label>Percentage/CGPA *</label>
+                            <input type="number" step="0.01" class="edu-percentage" min="0" max="100" required maxlength="3" onkeydown="return event.key !== 'e' && event.key !== 'E'"
+                            oninput="this.value = this.value.replace(/[eE]/g, '')">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="educationUpload">Education Certificates *</label>
+                        <input type="file" id="educationUpload" accept=".pdf"  required>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="add-section" id="addEducation">
+                <i class="fas fa-plus"></i> Add Education
+            </button>
+            <div class="actions">
+                <button class="outline" id="back-button-3">Back</button>
+                <button class="primary" id="next-button-3">Next</button>
+              </div>
+          </div>
+    
+          <!-- Step 3 - Address -->
+          <div id="step-3" class="card" style="display:none;">
+            <h3 class="section-heading">Address</h3>
+            
+            <!-- Permanent Address -->
+            <h4>Permanent Address</h4>
+            <div class="field-group">
+              <label for="permanent-street">Street Address</label>
+              <input type="text" id="permanent-street" name="permanent-street" required minlength="5">
+            </div>
+            <div class="field-group">
+              <label for="permanent-city">City</label>
+              <input type="text" id="permanent-city" name="permanent-city" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="permanent-state">State</label>
+              <input type="text" id="permanent-state" name="permanent-state" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="permanent-zipcode">Postal Code</label>
+              <input type="text" id="permanent-zipcode" name="permanent-zipcode" required minlength="6" maxlength="6" required oninput="filterUanInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="permanent-country">Country</label>
+              <input type="text" id="permanent-country" name="permanent-country" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+    
+            <!-- Current Address -->
+            <h4>Current Address</h4>
+            <div class="field-group">
+              <label for="current-street">Street Address</label>
+              <input type="text" id="current-street" name="current-street" required minlength="5">
+            </div>
+            <div class="field-group">
+              <label for="current-city">City</label>
+              <input type="text" id="current-city" name="current-city" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="current-state">State</label>
+              <input type="text" id="current-state" name="current-state" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="current-zipcode">Postal Code</label>
+              <input type="text" id="current-zipcode" name="current-zipcode" required minlength="6" maxlength="6" required oninput="filterUanInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="current-country">Country</label>
+              <input type="text" id="current-country" name="current-country" required minlength="5" required oninput="filterNameInput(event)"
+              >
+            </div>
+            
+            <div class="actions">
+              <button class="outline" id="back-button-3">Back</button>
+              <button class="primary" id="next-button-3">Next</button>
+            </div>
+          </div>
+    
+          <!-- Step 4 - Work History -->
+          <div id="step-4" class="card" style="display:none;">
+            <h3 class="section-heading">Work History</h3>
+            
+            <!-- Work History Entries Container -->
+            <div id="workHistoryContainer">
+                <!-- Template for work history entries -->
+                <div class="repeater-section work-history-entry">
+                    <span class="remove-section">&minus;</span>
+                    <div class="field-group">
+                        <label for="company-name">Company Name</label>
+                        <input type="text" class="company-name" name="company-name" required minlength="5" required oninput="filterNameInput(event)">
+                    </div>
+                    <div class="field-group">
+                        <label for="designation">Designation</label>
+                        <input type="text" class="designation" name="designation" required minlength="5" required oninput="filterNameInput(event)">
+                    </div>
+                    <div class="field-group">
+                      <label for="employment-period">Employment Period (in years)</label>
+                      <input type="text" 
+                             class="employment-period" 
+                             name="employment-period" 
+                             required 
+                             maxlength="2"
+                             pattern="^[0-9]{1,2}$"
+                             title="Please enter a valid employment period (1-99 years)"
+                             oninput="this.value = this.value.replace(/\D/g, '')"
+                             >
+                  </div>
+                    <div class="field-group">
+                        <label for="work-location">Location</label>
+                        <input type="text" class="work-location" name="work-location" required minlength="5" required oninput="filterNameInput(event)">
+                    </div>
+                    <div class="field-group">
+                        <label for="reason-for-leaving">Reason for Leaving</label>
+                        <input type="text" class="reason-for-leaving" name="reason-for-leaving" required minlength="5">
+                    </div>
+                    <div class="field-group">
+                      <label for="documentUpload">Work Documents*</label>
+                      <input type="file" id="documentUpload" accept=".pdf" multiple required style=" width: 100%; padding: 12px;">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Button to add new work history entry -->
+            <button type="button" class="add-section" id="addWorkHistory">
+                <i class="fas fa-plus"></i> Add Work History
+            </button>
+        
+            <!-- Actions -->
+            <div class="actions">
+                <button class="outline" id="back-button-4">Back</button>
+                <button class="primary" id="next-button-4">Next</button>
+            </div>
+        </div>
+          <!-- Step 5 - Bank Details -->
+          <div id="step-5" class="card" style="display:none;">
+            <h3 class="section-heading">Bank Details</h3>
+            
+            <div class="field-group">
+              <label for="account-holder-name">Account Holder's Name</label>
+              <input type="text" id="account-holder-name" name="account-holder-name" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="bank-name">Bank Name</label>
+              <input type="text" id="bank-name" name="bank-name" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="account-number">Account Number</label>
+              <input type="text" id="account-number" name="account-number" required minlength="11" maxlength="16" required oninput="filterUanInput(event)">
+            </div>
+            <div class="field-group">
+                <label for="ifsc-code">IFSC Code</label>
+                <input 
+                    type="text"
+                    id="ifsc-code"
+                    name="ifsc-code"
+                    required
+                    minlength="11"
+                    maxlength="11"
+                    oninput="validateIFSCCode(event)"
+                >
+                <!-- Error message will be dynamically added here -->
+            </div>
+          
+          
+            <div class="field-group">
+              <label for="bank-branch">Bank Branch</label>
+              <input type="text" id="bank-branch" name="bank-branch" required minlength="5" required oninput="filterNameInput(event)">
+            </div>
+            <div class="field-group">
+              <label for="account-type">Account Type</label>
+              <select id="account-type" name="account-type" required>
+                <option value="savings">Savings</option>
+                <option value="current">Current</option>
+              </select>
+            </div>
+    
+            <div class="actions">
+              <button class="outline" id="back-button-5">Back</button>
+              <button class="primary" id="submit-button">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <script>
+        // Global variables
+// Global variables
+let currentStep = 0;
+const steps = ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'];
+
+let employeeData = {
+    status: 'pending',
+    department: 'Not Assigned',
+    submissionDate: new Date().toISOString()
+};
+
+// Utility functions for error handling
+function showError(input, message) {
+    removeError(input);
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    input.parentNode.insertBefore(errorDiv, input.nextSibling);
+    input.classList.add('invalid');
+}
+
+function removeError(input) {
+    const existingError = input.nextElementSibling;
+    if (existingError && existingError.className === 'error-message') {
+        existingError.remove();
+    }
+    input.classList.remove('invalid');
+}
+
+// Validation functions
+const validators = {
+    text: (value) => {
+        const trimmedValue = value.replace(/\s+/g, '');
+        const regex = /^[A-Za-z]{5,}$/;
+        return {
+            isValid: regex.test(trimmedValue),
+            message: 'Must be at least 5 characters long (excluding spaces) and contain only letters'
+        };
+    },
+
+    email: (value) => {
+        const regex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook)\.com$/;
+        return {
+            isValid: regex.test(value),
+            message: 'Please enter a valid email from gmail, yahoo, or outlook'
+        };
+    },
+
+    mobile: (value) => {
+        const regex = /^\d{10}$/;
+        return {
+            isValid: regex.test(value),
+            message: 'Mobile number must be exactly 10 digits'
+        };
+    },
+
+    aadhar: (value) => {
+        const regex = /^\d{12}$/;
+        return {
+            isValid: regex.test(value),
+            message: 'Aadhar number must be exactly 12 digits'
+        };
+    },
+
+    pan: (value) => {
+        const regex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+        return {
+            isValid: regex.test(value),
+            message: 'PAN must be in format ABCDE1234F'
+        };
+    },
+
+    dob: (value) => {
+        const birthDate = new Date(value);
+        const today = new Date();
+        
+        // Check if future date
+        if (birthDate > today) {
+            return {
+                isValid: false,
+                message: 'Date of birth cannot be in the future'
+            };
+        }
+        
+        // Calculate age
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        
+        return {
+            isValid: age >= 22,
+            message: 'You must be at least 22 years old'
+        };
+    },
+
+    year: (value) => {
+        const currentYear = new Date().getFullYear();
+        const yearRegex = /^\d{4}$/;
+        const yearValue = parseInt(value);
+        
+        if (!yearRegex.test(value)) {
+            return {
+                isValid: false,
+                message: 'Year must be exactly 4 digits'
+            };
+        }
+        
+        if (yearValue > currentYear) {
+            return {
+                isValid: false,
+                message: 'Year cannot be in the future'
+            };
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    number: (value) => {
+        const num = parseFloat(value);
+        return {
+            isValid: !isNaN(num) && num >= 0 && num <= 100,
+            message: 'Please enter a valid number between 0 and 100'
+        };
+    },
+
+    zipcode: (value) => {
+        const regex = /^\d{6}$/;
+        return {
+            isValid: regex.test(value),
+            message: 'Postal code must be exactly 6 digits'
+        };
+    },
+
+    accountNumber: (value) => {
+        const regex = /^\d{9,18}$/;
+        return {
+            isValid: regex.test(value),
+            message: 'Account number must be between 9 and 18 digits'
+        };
+    },
+
+    ifsc: (value) => {
+        const regex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+        return {
+            isValid: regex.test(value),
+            message: 'IFSC must be in format ABCD0123456'
+        };
+    },
+
+    workDetails: (value) => {
+        const trimmedValue = value.replace(/\s+/g, '');
+        const regex = /^[A-Za-z]{5,}$/;
+        return {
+            isValid: regex.test(trimmedValue),
+            message: 'Must contain at least 5 alphabetic characters (excluding spaces)'
+        };
+    },
+
+    fileUpload: (input) => {
+        return {
+            isValid: input.files && input.files.length > 0,
+            message: 'Please upload the required document'
+        };
+    }
+};
+
+// Field validation function
+function validateField(input) {
+    const value = input.value.trim();
+    
+    // Handle required files
+    if (input.type === 'file' && input.required) {
+        const fileResult = validators.fileUpload(input);
+        if (!fileResult.isValid) {
+            showError(input, fileResult.message);
+            return false;
+        }
+        removeError(input);
+        return true;
+    }
+    
+    // Handle required fields
+    if (input.required && !value) {
+        showError(input, `${input.previousElementSibling.textContent.replace('*', '')} is required`);
+        return false;
+    }
+
+    // Skip validation if field is empty and not required
+    if (!value && !input.required) {
+        removeError(input);
+        return true;
+    }
+
+    // Validate Date of Birth
+    if (input.id === 'dob') {
+        const dobResult = validators.dob(value);
+        if (!dobResult.isValid) {
+            showError(input, dobResult.message);
+            return false;
+        }
+    }
+
+    // Validate Work History fields
+    if (input.className.includes('company-name') || 
+        input.className.includes('designation') || 
+        input.className.includes('work-location') || 
+        input.className.includes('reason-for-leaving')) {
+        const workResult = validators.workDetails(value);
+        if (!workResult.isValid) {
+            showError(input, workResult.message);
+            return false;
+        }
+    }
+
+    // Special handling for year of passing
+    if (input.className.includes('edu-year')) {
+        const yearResult = validators.year(value);
+        if (!yearResult.isValid) {
+            showError(input, yearResult.message);
+            return false;
+        }
+    } else {
+        // Determine validator type
+        let validatorType;
+        if (input.id.includes('name') || input.id.includes('city') || input.id.includes('state') || 
+            input.id.includes('country') || input.id.includes('branch') || input.className.includes('edu-stream') ||
+            input.className.includes('edu-institution') || input.className.includes('edu-board')) {
+            validatorType = 'text';
+        } else if (input.type === 'email') {
+            validatorType = 'email';
+        } else if (input.type === 'tel' || input.id.includes('mobile')) {
+            validatorType = 'mobile';
+        } else if (input.id.includes('aadhar')) {
+            validatorType = 'aadhar';
+        } else if (input.id.includes('pan')) {
+            validatorType = 'pan';
+        } else if (input.className.includes('edu-percentage')) {
+            validatorType = 'number';
+        } else if (input.id.includes('zipcode')) {
+            validatorType = 'zipcode';
+        } else if (input.id.includes('account-number')) {
+            validatorType = 'accountNumber';
+        } else if (input.id.includes('ifsc')) {
+            validatorType = 'ifsc';
+        }
+
+        const validator = validators[validatorType];
+        if (validator) {
+            const result = validator(value);
+            if (!result.isValid) {
+                showError(input, result.message);
+                return false;
+            }
+        }
+    }
+
+    removeError(input);
+    return true;
+}
+
+// Step validation function
+function validateStep(stepId) {
+    const step = document.getElementById(stepId);
+    const inputs = step.querySelectorAll('input, select');
+    let isValid = true;
+
+    inputs.forEach(input => {
+        if (!validateField(input)) {
+            isValid = false;
+        }
+    });
+
+    return isValid;
+}
+
+// Collection functions
+function collectEducationData(container) {
+    const educationData = [];
+    const entries = container.querySelectorAll('.education-entry');
+    
+    entries.forEach(entry => {
+        const eduData = {
+            level: entry.querySelector('.edu-level').value,
+            stream: entry.querySelector('.edu-stream').value,
+            institution: entry.querySelector('.edu-institution').value,
+            board: entry.querySelector('.edu-board').value,
+            yearOfPassing: entry.querySelector('.edu-year').value,
+            percentage: entry.querySelector('.edu-percentage').value
+        };
+        educationData.push(eduData);
+    });
+    
+    return educationData;
+}
+
+function collectWorkHistoryData(container) {
+    const workHistoryData = [];
+    const entries = container.querySelectorAll('.work-history-entry');
+    
+    entries.forEach(entry => {
+        const workData = {
+            companyName: entry.querySelector('.company-name').value,
+            designation: entry.querySelector('.designation').value,
+            employmentPeriod: entry.querySelector('.employment-period').value,
+            location: entry.querySelector('.work-location').value,
+            reasonForLeaving: entry.querySelector('.reason-for-leaving').value
+        };
+        workHistoryData.push(workData);
+    });
+    
+    return workHistoryData;
+}
+
+function collectStepData(stepId) {
+    const step = document.getElementById(stepId);
+    const data = {};
+    
+    const inputs = step.querySelectorAll('input:not([type="file"]), select');
+    inputs.forEach(input => {
+        if (input.id) {
+            data[input.id] = input.value;
+        } else if (input.name) {
+            data[input.name] = input.value;
+        }
+    });
+    
+    if (stepId === 'step-2') {
+        data.education = collectEducationData(step);
+    }
+    
+    if (stepId === 'step-4') {
+        data.workHistory = collectWorkHistoryData(step);
+    }
+    
+    return data;
+}
+
+// Navigation function
+function navigateToStep(direction) {
+    const currentStepId = steps[currentStep];
+    
+    if (direction === 'next') {
+        if (!validateStep(currentStepId)) {
+            const firstInvalid = document.querySelector(`#${currentStepId} .invalid`);
+            if (firstInvalid) {
+                firstInvalid.focus();
+            }
+            return false;
+        }
+        
+        const stepData = collectStepData(currentStepId);
+        Object.assign(employeeData, stepData);
+        
+        document.getElementById(currentStepId).style.display = "none";
+        currentStep++;
+        document.getElementById(steps[currentStep]).style.display = "block";
+        updateProgress();
+    } else if (direction === 'back') {
+        document.getElementById(currentStepId).style.display = "none";
+        currentStep--;
+        document.getElementById(steps[currentStep]).style.display = "block";
+        updateProgress();
+    }
+}
+
+// Add entry functions
+function addEntry(buttonId, containerId, templateSelector) {
+    const container = document.getElementById(containerId);
+    const template = container.querySelector(templateSelector);
+
+    document.getElementById(buttonId).addEventListener('click', () => {
+        const newEntry = template.cloneNode(true);
+        const inputs = newEntry.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.value = '';
+            removeError(input);
+        });
+        container.appendChild(newEntry);
+        
+        // Add remove button functionality
+        const removeBtn = newEntry.querySelector('.remove-section');
+        if (removeBtn) {
+            removeBtn.addEventListener('click', () => {
+                const entries = container.querySelectorAll(templateSelector);
+                if (entries.length > 1) {
+                    newEntry.remove();
+                } else {
+                    alert('At least one entry is required');
+                }
+            });
+        }
+    });
+}
+
+// Progress bar update
+function updateProgress() {
+    const progressBar = document.querySelector('.progress-bar');
+    if (progressBar) {
+        const progress = ((currentStep + 1) / steps.length) * 100;
+        progressBar.style.width = `${progress}%`;
+    }
+}
+
+// Input filters
+function filterNameInput(event) {
+    const input = event.target;
+    input.value = input.value.replace(/[^A-Za-z\s]/g, '');
+}
+
+function filterUanInput(event) {
+    const input = event.target;
+    input.value = input.value.replace(/[^0-9]/g, '');
+}
+
+function validateIFSCCode(event) {
+    const input = event.target;
+    input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+// Initialize form
+document.addEventListener('DOMContentLoaded', function() {
+    // Show first step
+    document.getElementById(steps[currentStep]).style.display = "block";
+    
+    // Initialize add entry buttons
+    addEntry('addWorkHistory', 'workHistoryContainer', '.work-history-entry');
+    addEntry('addEducation', 'educationContainer', '.education-entry');
+
+    // Add input event listeners
+    const allInputs = document.querySelectorAll('input, select');
+    allInputs.forEach(input => {
+        input.addEventListener('input', () => validateField(input));
+        input.addEventListener('blur', () => validateField(input));
+    });
+
+    // Navigation button handlers
+    document.querySelectorAll('[id^="next-button"]').forEach(button => {
+        button.addEventListener('click', () => navigateToStep('next'));
+    });
+
+    document.querySelectorAll('[id^="back-button"]').forEach(button => {
+        button.addEventListener('click', () => navigateToStep('back'));
+    });
+
+    // Submit button handler
+    document.getElementById('submit-button').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        if (!validateStep(steps[currentStep])) {
+            const firstInvalid = document.querySelector(`#${steps[currentStep]} .invalid`);
+            if (firstInvalid) {
+                firstInvalid.focus();
+            }
+            return false;
+        }
+
+        const finalStepData = collectStepData(steps[currentStep]);
+        Object.assign(employeeData, finalStepData);
+        
+        // Save to localStorage
+        // Save to localStorage
+        let existingEmployees = JSON.parse(localStorage.getItem('employeeData')) || [];
+        employeeData.id = Date.now();
+        existingEmployees.push(employeeData);
+        localStorage.setItem('employeeData', JSON.stringify(existingEmployees));
+        
+        alert('Onboarding form submitted successfully!');
+        location.reload();
+    });
+
+    // Add custom styling for error messages
+    const style = document.createElement('style');
+    style.textContent = `
+        .error-message {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        input.invalid {
+            border-color: #ff0000;
+            background-color: #fff0f0;
+        }
+        
+        input[type="file"].invalid {
+            border: 1px solid #ff0000;
+            padding: 5px;
+        }
+
+        .field-group {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .field-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .field-group input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+
+        .field-group input[type="file"].invalid {
+            border-color: #ff0000;
+        }
+
+        /* Add red asterisk for required fields */
+        .field-group label.required:after {
+            content: " *";
+            color: #ff0000;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Set max date for DOB input
+    const dobInput = document.getElementById('dob');
+    if (dobInput) {
+        // Calculate date for 22 years ago
+        const today = new Date();
+        const maxDate = new Date(today.getFullYear() - 22, today.getMonth(), today.getDate());
+        const formattedMaxDate = maxDate.toISOString().split('T')[0];
+        
+        // Set max attribute to today's date to prevent future dates
+        dobInput.setAttribute('max', today.toISOString().split('T')[0]);
+        
+        // Add validation on change
+        dobInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            if (selectedDate > maxDate) {
+                showError(this, 'You must be at least 22 years old');
+                this.value = '';
+            }
+        });
+    }
+
+    // Add required asterisk to labels
+    document.querySelectorAll('input[required], select[required]').forEach(input => {
+        const label = input.previousElementSibling;
+        if (label && label.tagName === 'LABEL') {
+            label.classList.add('required');
+        }
+    });
+
+    // File upload validation
+    document.querySelectorAll('input[type="file"]').forEach(fileInput => {
+        fileInput.addEventListener('change', function() {
+            if (this.required && (!this.files || this.files.length === 0)) {
+                showError(this, 'Please upload the required document');
+            } else if (this.files && this.files.length > 0) {
+                const file = this.files[0];
+                
+                // Validate file type (PDF only)
+                if (!file.type.match('application/pdf')) {
+                    showError(this, 'Please upload a PDF file');
+                    this.value = '';
+                    return;
+                }
+                
+                // Validate file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showError(this, 'File size must be less than 5MB');
+                    this.value = '';
+                    return;
+                }
+                
+                removeError(this);
+            }
+        });
+    });
+
+    // Initialize progress bar
+    updateProgress();
+});
+    </script>
+</body>
+</html>
